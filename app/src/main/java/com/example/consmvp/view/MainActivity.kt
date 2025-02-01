@@ -52,6 +52,11 @@ class MainActivity : AppCompatActivity(), IUsersView {
         presenter.upadateList()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+    }
+
 
 
     override fun showListOnView(users: List<User>) {
