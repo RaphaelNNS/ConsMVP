@@ -20,6 +20,7 @@ import com.example.consmvp.presenter.UsersPresenter
 import com.example.consmvp.view.adapter.UsersAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), IUsersView {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), IUsersView {
     private lateinit var repo: JsonPlaceHolderRepo
     private lateinit var rv: RecyclerView
     private lateinit var usersAdapter: UsersAdapter
+    private lateinit var uiScope: CoroutineScope
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +42,11 @@ class MainActivity : AppCompatActivity(), IUsersView {
             insets
         }
 
+        uiScope = CoroutineScope(Dispatchers.IO)
         textCarregando = findViewById(R.id.textCarregando)
         rv = findViewById(R.id.rvMainUser)
         repo = JsonPlaceHolderRepo()
-        presenter = UsersPresenter(repo, this)
+        presenter = UsersPresenter  (repo, this, uiScope)
         rv.layoutManager = LinearLayoutManager(this)
         rv.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
         presenter.upadateList()
